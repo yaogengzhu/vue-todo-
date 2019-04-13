@@ -1,0 +1,18 @@
+[
+    {
+        "isSelect":true,
+        "productImg":"https://images-na.ssl-images-amazon.com/images/I/71-r25bsIPL._AA100_.jpg",
+        "productName":"茅台 53度贵州茅台酒(金龙珍品)500ml (送礼袋)(gift box)",
+        "productStatus":"库存中仅剩 5 件。",
+        "productPrice":4388.00,
+        "productCount":1
+    },
+    {
+        "isSelect":true,
+        "productImg":"https://images-na.ssl-images-amazon.com/images/I/617WJ-SE-rL._AA100_.jpg",
+        "productName":"拉菲罗斯柴尔德 传奇梅多克红葡萄酒 六支经典蓝色礼盒装 750ml*6(ASC)(法国进口红酒)",
+        "productStatus":"现在有货",
+        "productPrice":998.80,
+        "productCount":1
+    }
+]

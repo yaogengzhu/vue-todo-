@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>亚马孙购物车</title>
+	<!-- <script src="../node_modules/bootstrap/dist/css/bootstrap.css"></script> -->
+	<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+	<script src="../node_modules/axios/dist/axios.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<div class="container">
+			<div class="row">
+				<table class="table clearfix">
+					<thead>
+						<th><span>全选</span> <input type="checkbox" v-model='checkAll' @change='getStatus'></th>
+						<th class="h2" width='60%'>购物车</th>
+						<th class="h6">价格</th>
+						<th class="h6">数量</th>
+					</thead>
+					<tbody>
+						<tr v-for='(item,index) in products'>
+							<td>
+								<input type="checkbox" v-model="item.isSelect" @change="getOne">
+							</td>
+							<td>
+								<div class="media">
+									<div class="media-left media-middle">
+										<a href="#">
+											<img :src="item.productImg" alt="" class="media-object ">
+										</a>
+									</div>
+									<div class="media-body">
+										<p class="media-heading h5 text-primary">{{ item.productName}}</p>
+										<p class="text-info small ">{{ item.productStatus }}</p>
+										<p class="small">此商品可享受免费配送</p>
+										<p><a href="#" class="btn samll btn-info" @click="remove(index)">删除</a></p>
+									</div>
+								</div>
+							</td>
+							<td> {{ item.productPrice | toFixed(2)}}</td>
+							<td>
+								<input type="number" v-model="item.productCount" class="small" min="1">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr v-if="true">
+			<p class="text-right"><span class="text-danger">合计:</span> &nbsp;&nbsp;{{ sum | toFixed(2) }} 元</p>
+		</div>
+	</div>
+
+
+
+	<script src="../node_modules/vue/dist/vue.js"></script>
+	<script>
+
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				products: [],  // 数据存储
+				checkAll:false, // 默认情况下，不勾选全部
+			},
+			created() {
+				this.initData()   // 在页面开始加载的时候调用数据初始化方法
+			},
+			computed: {
+				sum() {
+					if (!this.products) return 
+					return this.products.reduce((pre, next, index, arr) => {
+						// console.log(pre,next,index,arr)
+						if (next.isSelect !== true) return pre
+						return pre + next.productPrice * next.productCount
+					}, 0)
+				}
+			},
+			methods: {
+				initData() {//数据初始化
+					axios.get('./assets/data.json')
+						.then(res => {
+							// console.log(res)
+							if (res.status !== 200) return alert('数据获取失败')
+							this.products = res.data
+							this.getOne()  // 数据初始化就可以进行判断了
+						})
+				},
+				remove(i) { // 删除该商品
+					this.products = this.products.filter((item, index) => index !== i)
+				},
+				getStatus(){ // 监听是否选中(全选或者全不选)
+					// alert(this.checkAll)
+				  this.products.filter( item => item.isSelect = this.checkAll )
+				},
+				getOne(){
+					this.checkAll = this.products.every(item => item.isSelect === true )
+				}
+			},
+			filters: {
+				toFixed: (data, num) => {
+					return parseFloat(data).toFixed(num)
+				}
+			}
+		})
+	</script>
+</body>
+
+</html>
